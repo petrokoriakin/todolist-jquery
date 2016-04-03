@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<title>Pokemon GO</title>
+<script type="text/javascript">
+
+  var currentInfo = {}
+
+  var div = function(v){
+    return '<div>' + v + '</div>'
+  }
+
+  var row = function(name, v){
+    return '<tr><td>' + name + '</td><td>' + v + '</td></tr>'
+  }
+
+  var parseData = function(d){
+    currentInfo.name = d.name
+    currentInfo.weight = d.weight
+    types = []
+    for(var i = 0; i < d.types.length; i++) {
+      types[i] = d.types[i].type.name
+    }
+    currentInfo.types = types
+    currentInfo.totalMoves = d.moves.length
+    for(var i = 0; i < d.stats.length; i++) {
+      currentInfo[d.stats[i].stat.name] = d.stats[i].stat
+    }
+  }
+
+  $.get("http://pokeapi.co/api/v2/pokemon/1/", function (data){
+    parseData(data);
+    $('#profile').html(
+      div('Name') + div(currentInfo.name) +
+      div('Weight') + div(currentInfo.weight)
+    )
+
+    $('#profile-table').html(
+      '<table>' +
+      row('Name', currentInfo.name) +
+      row('Weight', currentInfo.weight) +
+      '</table>'
+    )
+  });
+
+
+ </script>
+
+</head>
+  <body>
+    <div id="profile">
+      
+    </div>
+    
+    <div id="profile-table">
+      
+    </div>
+
+  </body>
+</html>
