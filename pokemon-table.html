@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<title>Pokemon GO</title>
+<script type="text/javascript">
+
+  var currentInfo = {}
+
+  var row = function(name, v){
+    return '<tr><td>' + name + '</td><td>' + v + '</td></tr>'
+  }
+
+  var parseData = function(d){
+    currentInfo.name = d.name
+    currentInfo.weight = d.weight
+    types = []
+    for(var i = 0; i < d.types.length; i++) {
+      types[i] = d.types[i].type.name
+    }
+    currentInfo.types = types
+    currentInfo.totalMoves = d.moves.length
+    for(var i = 0; i < d.stats.length; i++) {
+      currentInfo[d.stats[i].stat.name] = d.stats[i].base_stat
+    }
+  }
+
+  $.get("http://pokeapi.co/api/v2/pokemon/1/", function (data){
+    parseData(data)
+
+    $('#profile-table').html(
+      '<table>' +
+      row('Name', currentInfo.name) +
+      row('Type', currentInfo.types[0]) +
+      row('Attack', currentInfo.attack) +
+      row('Defense', currentInfo.defense) +
+      row('HP', currentInfo.hp) +
+      row('SP Attack', currentInfo['special-attack']) +
+      row('SP Defense', currentInfo['special-defense']) +
+      row('Speed', currentInfo.speed) +
+      row('Weight', currentInfo.weight) +
+      row('Total Moves', currentInfo.totalMoves) +
+      '</table>'
+    )
+  });
+
+
+ </script>
+
+</head>
+  <body>
+    <div id="profile">
+      
+    </div>
+    
+    <div id="profile-table">
+      
+    </div>
+
+  </body>
+</html>
